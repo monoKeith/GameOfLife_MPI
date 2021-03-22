@@ -91,9 +91,64 @@ void Piece::printPiece(){
 }
 
 
+// Count neighbour for cell.
+// targetY & targetX corresponds to internal indices. (1 to length - 1)
+int Piece::countNeighbor(int targetY, int targetX){
+    int count = 0;
+    for (int y = targetY - 1; y <= targetY + 1; ++y){
+        for (int x = targetX - 1; x <= targetX + 1; ++x){
+            if (y >= 0 && y < length_Y && x >= 0 && x < length_X){
+                // Internal cell
+                if (piece[y][x]) count += 1;
+            }else{
+                // External cell
+                // Translate coordinates to real coordinates
+                int real_X = workRange_X[0] + x;
+                int real_Y = workRange_Y[0] + y;
+                // Access external cell
+
+            }
+        }
+    }
+    // If target itself is true, subtract 1 from result.
+    if (piece[targetY][targetX]) count -= 1;
+    return count;
+}
+
+
 // calculate next iteration
 void Piece::iterate(){
-
+    // Allocate new piece
+    bool** nextPiece = (bool**) malloc(length_Y * sizeof(bool*));
+    for (int y = 0; y < length_Y; ++y){
+        piece[y] = (bool*) malloc(length_X * sizeof(bool));
+    }
+    // Iterate all cells
+    for (int y = 1; y < length_Y - 1; ++y){
+        for (int x = 1; x < length_X - 1; ++x){
+            // calculate amount of neighbour
+            int neighbour = countNeighbor(y, x);
+            if (neighbour >= 2 && neighbour <= 3){
+                // survives
+                nextPiece[y][x] = piece[y][x];
+            }
+            if (neighbour >= 4){
+                // dies from overpopulation
+                nextPiece[y][x] = false;
+            }
+            if (neighbour <= 1){
+                // dies from isolation
+                nextPiece[y][x] = false;
+            }
+            if (neighbour == 3){
+                // give birth
+                nextPiece[y][x] = true;
+            }
+        }
+    }
+    // Update piece
+    deletePiece(piece);
+    piece = nextPiece;
 }
 
 
