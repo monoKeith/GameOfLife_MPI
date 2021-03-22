@@ -8,6 +8,7 @@ public:
     void initialize(char input[]);
     void printPiece();
     void getPiece(char result[]);
+    void iterate();
     int length();
     static int length(int workRange[]);
 private:
@@ -19,9 +20,16 @@ private:
     // Inclusive Bounds of the original map, used for edge detection.
     int lowerBound;
     int upperBound;
-
     bool INITIALIZED;
+    // Ptr to current piece.
     bool** piece;
+    // Clean memory
+    void deletePiece(bool** p);
+    // Piece position on the original map
+    enum class HorizontalPosition   { left, middle, right };
+    enum class VerticalPosition     { top, middle, bottom };
+    HorizontalPosition  pos_X;
+    VerticalPosition    pos_Y;
 };
 
 #endif

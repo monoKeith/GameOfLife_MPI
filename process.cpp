@@ -15,6 +15,7 @@ Process::~Process(){
     }
 }
 
+
 void Process::initialize(){
     // Abort if already initialized.
     if (INITIALIZED) return;
@@ -38,4 +39,10 @@ void Process::initialize(){
 
     // Set flag
     INITIALIZED = true;
+}
+
+
+// Calculate and generate next iteration.
+void Process::iterate(){
+
 }

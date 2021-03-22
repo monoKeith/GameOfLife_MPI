@@ -12,6 +12,7 @@ public:
     Process();
     ~Process();
     void initialize();
+    void iterate();
 protected:
     bool INITIALIZED;
     int const ROOT_ID = 0;

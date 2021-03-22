@@ -18,6 +18,13 @@ Piece::Piece(int workRange[], int processorID, int N){
     INITIALIZED = false;
     lowerBound = 0;
     upperBound = N - 1;
+    // Identify position
+    pos_X = HorizontalPosition::middle;
+    if (workRange_X[0] == lowerBound)   pos_X = HorizontalPosition::left;
+    if (workRange_X[1] == upperBound)   pos_X = HorizontalPosition::right;
+    pos_Y = VerticalPosition::middle;
+    if (workRange_Y[0] == lowerBound)   pos_Y = VerticalPosition::top;
+    if (workRange_Y[1] == upperBound)   pos_Y = VerticalPosition::bottom;
     // Print work range of this processor
     cout << "Processor #" << PROCESSOR_ID << 
         "\t X: " << workRange_X[0] << " - " << workRange_X[1] << 
@@ -27,11 +34,16 @@ Piece::Piece(int workRange[], int processorID, int N){
 
 Piece::~Piece(){
     if (INITIALIZED){
-        for (int y = 0; y < length_Y; ++y){
-            delete piece[y];
-        }
-        delete piece;
+        deletePiece(piece);
     }
+}
+
+
+void Piece::deletePiece(bool** p){
+    for (int y = 0; y < length_Y; ++y){
+        delete p[y];
+    }
+    delete p;
 }
 
 
@@ -76,6 +88,12 @@ void Piece::printPiece(){
         }
         cout << endl;
     }
+}
+
+
+// calculate next iteration
+void Piece::iterate(){
+
 }
 
 
