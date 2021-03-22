@@ -1,5 +1,5 @@
-all: main.o filehandle.o piece.o process.o
-	mpiCC main.o filehandle.o piece.o process.o -o main
+all: main.o filehandle.o piece.o process.o rootprocess.o
+	mpiCC main.o filehandle.o piece.o process.o rootprocess.o -o main
 
 main.o: main.cpp
 	mpiCC -c main.cpp
@@ -12,6 +12,9 @@ piece.o: piece.cpp piece.hpp
 
 process.o: process.cpp process.hpp
 	mpiCC -c process.cpp
+
+rootprocess.o: rootprocess.cpp rootprocess.hpp
+	mpiCC -c rootprocess.cpp
 
 clean:
 	rm main *.o
