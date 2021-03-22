@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ "$#" -ne 4 ]; then
+    echo "Usage: run <N> <k> <m> <file name>"
+    exit 1
+fi
+
+mpiexec -np 16 --hostfile hostfile main "$1" "$2" "$3" "$4"
