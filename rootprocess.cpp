@@ -61,14 +61,6 @@ void RootProcess::splitSquares(int** workDistribution)
             workDistribution[processorID][3] = splitIndex[row][1];
         }
     }
-
-    // Print work split detail
-    // for (int i = 0; i < PROCESSOR_COUNT; ++i){
-    //     int* wd = workDistribution[i];
-    //     cout << "Processor #" << i << 
-    //             "\t X: " << wd[0] << " - " << wd[1] << 
-    //             "\t Y: " << wd[2] << " - " << wd[3] << endl;
-    // }
 }
 
 

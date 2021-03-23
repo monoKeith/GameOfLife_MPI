@@ -17,20 +17,6 @@ int PROCESSOR_ID;
 int PROCESSOR_COUNT;
 
 
-void run_host(char* argv[])
-{
-    RootProcess process(argv);
-    process.run();
-}
-
-
-void run_dist()
-{
-    Process process;
-    process.run();
-}
-
-
 int main(int argc, char* argv[])
 {
     double wtime = MPI::Wtime();
@@ -58,10 +44,12 @@ int main(int argc, char* argv[])
         }
 
         // Run host
-        run_host(argv);
+        RootProcess process(argv);
+        process.run();
     } else {
         // Run dist
-        run_dist();
+        Process process;
+        process.run();
     }
 
     // Terminate MPI.

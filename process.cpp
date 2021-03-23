@@ -66,16 +66,12 @@ void Process::syncMap(){
 void Process::iterate(){
     // Wait for everyone
     MPI_Barrier(MPI_COMM_WORLD);
-
     // Synchronize external cells to each processor
     syncExternalCells();
-    
     // Iterate
     piece->iterate();
-
     // Wait for everyone to finish
     MPI_Barrier(MPI_COMM_WORLD);
-
     // Synchronize map
     syncMap();
 }
@@ -83,7 +79,7 @@ void Process::iterate(){
 
 void Process::run(){
     initialize();
-    for (int i = 0; i < k; ++i){
+    for (int i = 1; i <= k; ++i){
         iterate();
     }
 }
