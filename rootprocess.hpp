@@ -11,6 +11,7 @@ public:
     ~RootProcess();
     void distributeWork();
     void initialize();
+    void iterate();
 private:
     FileHandle* inputFile;
     bool WORK_DISTRIBUTED;

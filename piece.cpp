@@ -120,13 +120,14 @@ void Piece::iterate(){
     // Allocate new piece
     bool** nextPiece = (bool**) malloc(length_Y * sizeof(bool*));
     for (int y = 0; y < length_Y; ++y){
-        piece[y] = (bool*) malloc(length_X * sizeof(bool));
+        nextPiece[y] = (bool*) malloc(length_X * sizeof(bool));
     }
     // Iterate all cells
-    for (int y = 1; y < length_Y - 1; ++y){
-        for (int x = 1; x < length_X - 1; ++x){
+    for (int y = 0; y < length_Y; ++y){
+        for (int x = 0; x < length_X; ++x){
             // calculate amount of neighbour
             int neighbour = countNeighbor(y, x);
+            
             if (neighbour >= 2 && neighbour <= 3){
                 // survives
                 nextPiece[y][x] = piece[y][x];
@@ -148,6 +149,14 @@ void Piece::iterate(){
     // Update piece
     deletePiece(piece);
     piece = nextPiece;
+}
+
+
+void Piece::syncExternalCell(char input[]){
+    int extLength = externalLength();
+    for (int i = 0; i < extLength; ++i){
+        externalCells[i] = input[i];
+    }
 }
 
 

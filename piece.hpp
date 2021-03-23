@@ -15,6 +15,8 @@ public:
     void getPiece(char result[]);
     // Calculate next iteration.
     void iterate();
+    // Synchronize external cells
+    void syncExternalCell(char input[]);
     // Get length of current piece.
     int length();
     // Static method to calculate length of piece.

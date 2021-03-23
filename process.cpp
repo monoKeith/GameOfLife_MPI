@@ -44,5 +44,13 @@ void Process::initialize(){
 
 // Calculate and generate next iteration.
 void Process::iterate(){
+    // Sync External Cells
+    int curLength = piece->externalLength();
+    char curExternalCell[curLength];
+    MPI_Recv(curExternalCell, curLength, MPI_CHAR, ROOT_ID, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    piece->syncExternalCell(curExternalCell);
+    // Iterate
+    piece->iterate();
+    // Send current piece to root
 
 }

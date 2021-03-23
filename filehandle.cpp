@@ -90,8 +90,9 @@ void FileHandle::generateExternal(int workRange[], char result[]){
                 }
             }
         } else {
-            // Mid row: value of y must be valid.
-            int x = workRange[0] - 1;
+            // Mid row: value of y must be valid, only need to verify x.
+            int x;
+            x = workRange[0] - 1;
             // left out of bound
             result[curIndex ++] = (x < 0) ? false : val[y][x];
             x = workRange[1] + 1;

@@ -123,3 +123,19 @@ void RootProcess::initialize(){
     // set flag
     INITIALIZED = true;
 }
+
+
+void RootProcess::iterate(){
+    // Synchronize external cells to each processor
+    for (int processorID = 1; processorID < PROCESSOR_COUNT; ++processorID){
+        // Generate external vals
+        int curLength = Piece::externalLength(workDistribution[processorID]);
+        char externalCells[curLength];
+        inputFile->generateExternal(workDistribution[processorID], externalCells);
+        // Distribute external vals
+        MPI_Send(externalCells, curLength, MPI_CHAR, processorID, 0, MPI_COMM_WORLD);
+    }
+
+
+
+}
