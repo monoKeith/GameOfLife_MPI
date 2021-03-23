@@ -21,7 +21,9 @@ protected:
     int k;
     int m;
     Piece* piece;
-    void initialize();
+    virtual void initialize();
+    virtual void syncExternalCells();
+    virtual void syncMap();
     void iterate();
 };
 

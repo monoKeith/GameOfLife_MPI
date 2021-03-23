@@ -15,11 +15,10 @@ private:
     bool WORK_DISTRIBUTED;
     int** workDistribution;
     void distributeWork();
-    void initialize();
-    void iterate();
     void splitSquares(int** workDistribution);
-    void syncExternalCells();
-    void syncMap();
+    void initialize() override;
+    void syncExternalCells() override;
+    void syncMap() override;
 };
 
 #endif

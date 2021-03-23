@@ -164,24 +164,6 @@ void RootProcess::syncMap(){
 }
 
 
-void RootProcess::iterate(){
-    // Wait for everyone
-    MPI_Barrier(MPI_COMM_WORLD);
-
-    // Synchronize external cells to each processor
-    syncExternalCells();
-    
-    // Iterate
-    piece->iterate();
-
-    // Wait for everyone to finish
-    MPI_Barrier(MPI_COMM_WORLD);
-
-    // Synchronize map
-    syncMap();
-}
-
-
 void RootProcess::run(){
     distributeWork();
     initialize();

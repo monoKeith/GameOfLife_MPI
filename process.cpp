@@ -42,29 +42,44 @@ void Process::initialize(){
 }
 
 
+// Sync External Cells
+// Get external cells from root
+void Process::syncExternalCells(){
+    int curLength = piece->externalLength();
+    char curExternalCell[curLength];
+    MPI_Recv(curExternalCell, curLength, MPI_CHAR, ROOT_ID, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    piece->syncExternalCell(curExternalCell);
+}
+
+
+// Sync map
+// Send current piece to root
+void Process::syncMap(){
+    int curLength = piece->length();
+    char curPiece[curLength];
+    piece->getPiece(curPiece);
+    MPI_Send(curPiece, curLength, MPI_CHAR, ROOT_ID, 0, MPI_COMM_WORLD);
+}
+
+
 // Calculate and generate next iteration.
 void Process::iterate(){
     // Wait for everyone
     MPI_Barrier(MPI_COMM_WORLD);
 
-    // Sync External Cells
-    int curLength = piece->externalLength();
-    char curExternalCell[curLength];
-    MPI_Recv(curExternalCell, curLength, MPI_CHAR, ROOT_ID, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    piece->syncExternalCell(curExternalCell);
-
+    // Synchronize external cells to each processor
+    syncExternalCells();
+    
     // Iterate
     piece->iterate();
 
-    // Wait for others to finish
+    // Wait for everyone to finish
     MPI_Barrier(MPI_COMM_WORLD);
 
-    // Send current piece to root
-    curLength = piece->length();
-    char curPiece[curLength];
-    piece->getPiece(curPiece);
-    MPI_Send(curPiece, curLength, MPI_CHAR, ROOT_ID, 0, MPI_COMM_WORLD);
+    // Synchronize map
+    syncMap();
 }
+
 
 void Process::run(){
     initialize();
