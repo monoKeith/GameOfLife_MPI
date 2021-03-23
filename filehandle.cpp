@@ -9,6 +9,7 @@ FileHandle::FileHandle(int n)
     used = false;
 }
 
+
 FileHandle::~FileHandle()
 {
     if (used) {
@@ -18,6 +19,7 @@ FileHandle::~FileHandle()
         delete val;
     }
 }
+
 
 void FileHandle::readFile(char* inputFile)
 {
@@ -47,6 +49,7 @@ void FileHandle::readFile(char* inputFile)
     used = true;
 }
 
+
 void FileHandle::printFile()
 {
     // abort if the file is not read
@@ -60,6 +63,27 @@ void FileHandle::printFile()
         cout << endl;
     }
 }
+
+
+void FileHandle::saveFile(char* filename)
+{
+    if (!used)
+        return;
+
+    cout << endl<< "Saving to file: " << filename << endl;
+
+    ofstream outputFile(filename);
+
+    for (int y = 0; y < N; ++y){
+        for (int x = 0; x < N; ++x){
+            outputFile << val[y][x] ? '1' : '0';
+        }
+        outputFile << endl;
+    }
+    outputFile << endl;
+    outputFile.close();
+}
+
 
 // Slice the map into a piece according to workRange.
 void FileHandle::generatePiece(int workRange[], char result[])

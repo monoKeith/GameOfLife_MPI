@@ -188,8 +188,10 @@ void RootProcess::run(){
                 "] Finished Iteration # " << i << endl;
         // For each m-th evolutionary step, print.
         if (--mRemain == 0){
-           inputFile->printFile();
-           mRemain = m; 
+            char filenameBuf[64];
+            sprintf(filenameBuf, "iteration_%d.txt", i);
+            inputFile->saveFile(filenameBuf);
+            mRemain = m; 
         }
     }
     // Synchronize runtime
