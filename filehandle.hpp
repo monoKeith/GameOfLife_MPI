@@ -11,6 +11,7 @@ public:
     void readFile(char* inputFile);
     void printFile();
     void generatePiece(int workRange[], char curPiece[]);
+    void generateExternal(int workRange[], char extCells[]);
 
 private:
     // N = dimension of the square map.

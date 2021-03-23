@@ -35,6 +35,7 @@ Piece::Piece(int workRange[], int processorID, int N){
 Piece::~Piece(){
     if (INITIALIZED){
         deletePiece(piece);
+        delete externalCells;
     }
 }
 
@@ -54,7 +55,7 @@ void Piece::initialize(char input[]){
     // Initialize size
     length_X = workRange_X[1] - workRange_X[0] + 1;
     length_Y = workRange_Y[1] - workRange_Y[0] + 1;
-    // Initialize piece
+    // Allocate & initialize piece
     int curIndex = 0;
     piece = (bool**) malloc(length_Y * sizeof(bool*));
     for (int y = 0; y < length_Y; ++y){
@@ -63,6 +64,8 @@ void Piece::initialize(char input[]){
             piece[y][x] = (bool) input[curIndex++];
         }
     }
+    // Allocate external cells
+    externalCells = new bool[externalLength()];
     // Set initialized flag
     INITIALIZED = true;
 }
@@ -102,11 +105,7 @@ int Piece::countNeighbor(int targetY, int targetX){
                 if (piece[y][x]) count += 1;
             }else{
                 // External cell
-                // Translate coordinates to real coordinates
-                int real_X = workRange_X[0] + x;
-                int real_Y = workRange_Y[0] + y;
-                // Access external cell
-
+                if (getExternalCell(y, x)) count += 1;
             }
         }
     }
@@ -167,3 +166,68 @@ int Piece::length(int workRange[]){
     int length_Y = workRange[3] - workRange[2] + 1;
     return length_X * length_Y;
 }
+
+
+// Calculate the length of external values
+int Piece::externalLength(){
+    /* 
+        4 edges + 4 cells
+        +---x---+
+        |       |
+        y       y
+        |       |
+        +---x---+
+    */
+    return 2 * (length_X + length_Y) + 4;
+}
+
+
+int Piece::externalLength(int workRange[]){
+    int length_X = workRange[1] - workRange[0] + 1;
+    int length_Y = workRange[3] - workRange[2] + 1;
+    return 2 * (length_X + length_Y) + 4;
+}
+
+// Calculate the length of boundary values
+int Piece::boundaryLength(){
+    return 2 * (length_X + length_Y) - 4;
+}
+
+
+// Access value of an external cell
+// y & x corresponds to internal indices
+bool Piece::getExternalCell(int y, int x){
+    if (y >= 0 && y < length_Y && x >= 0 && x < length_X){
+        // Internal cell, shouldn't use this function but its supported.
+        // Very likely to happen when index is wriong.
+        cout << "WARNING! Unexpected getExternalCell() call." << endl;
+        return piece[y][x];
+    }
+    // Access external cell array
+    if (y == -1 && x >= -1 && x <= length_X){
+        // First row
+        int startIndex = 1;
+        return externalCells[startIndex + x];
+    }
+    if (y >= 0 && y < length_Y){
+        // Middle rows
+        int startIndex = (length_X + 2) + (2 * y);
+        if (x == -1) {
+            // First column
+            return externalCells[startIndex];
+        }
+        if (x == length_X){
+            // Last column (out of bound by 1)
+            return externalCells[startIndex + 1];
+        }  
+    }
+    if (y == length_Y && x >= -1 && x <= length_X){
+        // Last row (out of bound by 1)
+        int startIndex = externalLength() - length_Y - 1;
+        return externalCells[startIndex + x];
+    }
+    // If none match, return false.
+    return false;
+}
+
+
