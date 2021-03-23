@@ -17,6 +17,8 @@ private:
     bool WORK_DISTRIBUTED;
     int** workDistribution;
     void splitSquares(int** workDistribution);
+    void syncExternalCells();
+    void syncMap();
 };
 
 #endif

@@ -49,8 +49,16 @@ void Process::iterate(){
     char curExternalCell[curLength];
     MPI_Recv(curExternalCell, curLength, MPI_CHAR, ROOT_ID, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     piece->syncExternalCell(curExternalCell);
+
     // Iterate
     piece->iterate();
-    // Send current piece to root
 
+    // Wait for others to finish
+    MPI_Barrier(MPI_COMM_WORLD);
+
+    // Send current piece to root
+    curLength = piece->length();
+    char curPiece[curLength];
+    piece->getPiece(curPiece);
+    MPI_Send(curPiece, curLength, MPI_CHAR, ROOT_ID, 0, MPI_COMM_WORLD);
 }

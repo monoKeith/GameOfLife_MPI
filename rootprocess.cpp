@@ -125,8 +125,8 @@ void RootProcess::initialize(){
 }
 
 
-void RootProcess::iterate(){
-    // Synchronize external cells to each processor
+// Synchronize external cells to every processor including root.
+void RootProcess::syncExternalCells(){
     for (int processorID = 1; processorID < PROCESSOR_COUNT; ++processorID){
         // Generate external vals
         int curLength = Piece::externalLength(workDistribution[processorID]);
@@ -136,6 +136,44 @@ void RootProcess::iterate(){
         MPI_Send(externalCells, curLength, MPI_CHAR, processorID, 0, MPI_COMM_WORLD);
     }
 
+    // Generate externalCells for this processor
+    int curLength = piece->externalLength();
+    char externalCells[curLength];
+    inputFile->generateExternal(workDistribution[PROCESSOR_ID], externalCells);
+    piece->syncExternalCell(externalCells);
+}
 
 
+// Synchronize map from every processor including root.
+void RootProcess::syncMap(){
+    // Update map: root processor
+    int curLength = piece->length();
+    char curPiece[curLength];
+    piece->getPiece(curPiece);
+    inputFile->updatePiece(workDistribution[PROCESSOR_ID], curPiece);
+
+    // Update map: other processors
+    for (int processorID = 1; processorID < PROCESSOR_COUNT; ++processorID){
+        // Allocate buffer to recv
+        int curLength = Piece::length(workDistribution[processorID]);
+        char curPiece[curLength];
+        MPI_Recv(curPiece, curLength, MPI_CHAR, processorID, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        // Update map
+        inputFile->updatePiece(workDistribution[processorID], curPiece);
+    }
+}
+
+
+void RootProcess::iterate(){
+    // Synchronize external cells to each processor
+    syncExternalCells();
+    
+    // Iterate
+    piece->iterate();
+
+    // Wait for everyone to finish
+    MPI_Barrier(MPI_COMM_WORLD);
+
+    // Synchronize map
+    syncMap();
 }

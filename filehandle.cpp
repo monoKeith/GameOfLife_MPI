@@ -101,3 +101,15 @@ void FileHandle::generateExternal(int workRange[], char result[]){
         }
     }
 }
+
+
+// Update a piece
+void FileHandle::updatePiece(int workRange[], char curPiece[]){
+    int curIndex = 0;
+    // Import
+    for (int y = workRange[2]; y <= workRange[3]; ++y){
+        for (int x = workRange[0]; x <= workRange[1]; ++x){
+            val[y][x] = curPiece[curIndex++];
+        }
+    }
+}

@@ -12,7 +12,7 @@ public:
     void printFile();
     void generatePiece(int workRange[], char curPiece[]);
     void generateExternal(int workRange[], char extCells[]);
-
+    void updatePiece(int workRangep[], char curPiece[]);
 private:
     // N = dimension of the square map.
     int N;
