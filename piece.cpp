@@ -218,7 +218,7 @@ bool Piece::getExternalCell(int y, int x){
         int startIndex = 1;
         return externalCells[startIndex + x];
     }
-    if (y >= 0 && y < length_Y){
+    if (y >= 0 && y <= length_Y - 1){
         // Middle rows
         int startIndex = (length_X + 2) + (2 * y);
         if (x == -1) {
@@ -232,7 +232,7 @@ bool Piece::getExternalCell(int y, int x){
     }
     if (y == length_Y && x >= -1 && x <= length_X){
         // Last row (out of bound by 1)
-        int startIndex = externalLength() - length_Y - 1;
+        int startIndex = (length_X + 3) + (2 * length_Y);
         return externalCells[startIndex + x];
     }
     // If none match, return false.

@@ -179,16 +179,20 @@ void RootProcess::iterate(){
 
     // Synchronize map
     syncMap();
-
-    inputFile->printFile();
 }
 
 
 void RootProcess::run(){
     distributeWork();
     initialize();
+    int mRemain = m;
     for (int i = 1; i <= k; ++i){
-        cout << "Iteration " << i << endl;
         iterate();
+        cout << "Iteration " << i << " finished." << endl;
+        // For each m-th evolutionary step, print.
+        if (--mRemain == 0){
+           inputFile->printFile();
+           mRemain = m; 
+        }
     }
 }
