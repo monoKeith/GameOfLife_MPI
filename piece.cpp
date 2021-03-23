@@ -18,17 +18,6 @@ Piece::Piece(int workRange[], int processorID, int N){
     INITIALIZED = false;
     lowerBound = 0;
     upperBound = N - 1;
-    // Identify position
-    pos_X = HorizontalPosition::middle;
-    if (workRange_X[0] == lowerBound)   pos_X = HorizontalPosition::left;
-    if (workRange_X[1] == upperBound)   pos_X = HorizontalPosition::right;
-    pos_Y = VerticalPosition::middle;
-    if (workRange_Y[0] == lowerBound)   pos_Y = VerticalPosition::top;
-    if (workRange_Y[1] == upperBound)   pos_Y = VerticalPosition::bottom;
-    // Print work range of this processor
-    cout << "Processor #" << PROCESSOR_ID << 
-        "\t X: " << workRange_X[0] << " - " << workRange_X[1] << 
-        "\t Y: " << workRange_Y[0] << " - " << workRange_Y[1] << endl;
 }
 
 
@@ -70,6 +59,13 @@ void Piece::initialize(char input[]){
     INITIALIZED = true;
 }
 
+
+void Piece::printWorkRange(){
+// Print work range of this processor
+    cout << "    Processor #" << PROCESSOR_ID << 
+        "\t X: " << workRange_X[0] << " - " << workRange_X[1] << 
+        "\t Y: " << workRange_Y[0] << " - " << workRange_Y[1] << endl;
+}
 
 // Export current piece into an array. Same format as initialize.
 void Piece::getPiece(char result[]){
@@ -215,7 +211,7 @@ bool Piece::getExternalCell(int y, int x){
     // Access external cell array
     if (y == -1 && x >= -1 && x <= length_X){
         // First row
-        int startIndex = 1;
+        static const int startIndex = 1;
         return externalCells[startIndex + x];
     }
     if (y >= 0 && y <= length_Y - 1){
@@ -228,11 +224,12 @@ bool Piece::getExternalCell(int y, int x){
         if (x == length_X){
             // Last column (out of bound by 1)
             return externalCells[startIndex + 1];
-        }  
+        }
+        return false;
     }
     if (y == length_Y && x >= -1 && x <= length_X){
         // Last row (out of bound by 1)
-        int startIndex = (length_X + 3) + (2 * length_Y);
+        static const int startIndex = (length_X + 3) + (2 * length_Y);
         return externalCells[startIndex + x];
     }
     // If none match, return false.

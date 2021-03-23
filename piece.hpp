@@ -8,6 +8,8 @@ public:
     // Fill in this piece with an array. 
     // Dimension already defined in constructor.
     void initialize(char input[]);
+    // Print workRange.
+    void printWorkRange();
     // Print to console.
     void printPiece();
     // Returns current piece to result[].
@@ -41,11 +43,6 @@ private:
     bool** piece;
     // Ptr to external cells arr.
     bool* externalCells;
-    // Piece position on the original map
-    enum class HorizontalPosition   { left, middle, right };
-    enum class VerticalPosition     { top, middle, bottom };
-    HorizontalPosition  pos_X;
-    VerticalPosition    pos_Y;
     // Clean memory
     void deletePiece(bool** p);
     // Count neighbors

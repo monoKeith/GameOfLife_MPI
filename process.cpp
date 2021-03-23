@@ -4,15 +4,21 @@ using namespace std;
 #include "process.hpp"
 
 Process::Process(){
+    // Timer
+    time = MPI::Wtime();
+    // Init vars
     INITIALIZED = false;
     PROCESSOR_COUNT = MPI::COMM_WORLD.Get_size();
     PROCESSOR_ID = MPI::COMM_WORLD.Get_rank();
 }
 
 Process::~Process(){
-    if (INITIALIZED){
-        delete piece;
-    }
+    if (INITIALIZED)  delete piece;
+}
+
+
+double Process::currentTime(){
+    return MPI::Wtime() - time;
 }
 
 
@@ -79,6 +85,11 @@ void Process::iterate(){
 
 void Process::run(){
     initialize();
+    // Wait for everyone
+    MPI_Barrier(MPI_COMM_WORLD);
+    // Print work range
+    piece->printWorkRange();
+    // Run
     for (int i = 1; i <= k; ++i){
         iterate();
     }

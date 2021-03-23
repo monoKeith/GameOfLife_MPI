@@ -25,7 +25,7 @@ void FileHandle::readFile(char* inputFile)
     if (used)
         return;
 
-    cout << " Reading input file: " << inputFile << endl;
+    cout << "Reading input file: " << inputFile << endl;
     ifstream infile(inputFile);
 
     int curInt;

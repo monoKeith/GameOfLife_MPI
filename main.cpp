@@ -19,8 +19,6 @@ int PROCESSOR_COUNT;
 
 int main(int argc, char* argv[])
 {
-    double wtime = MPI::Wtime();
-
     //  Initialize MPI.
     MPI::Init(argc, argv);
 
@@ -54,10 +52,9 @@ int main(int argc, char* argv[])
 
     // Terminate MPI.
     MPI::Finalize();
-    wtime = MPI::Wtime() - wtime;
 
     if (PROCESSOR_ID == 0) {
-        cout << "  Elapsed wall clock time = " << wtime << " seconds.\n";
+        cout << "Done." << endl;
     }
 
     return 0;

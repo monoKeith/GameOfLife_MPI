@@ -13,6 +13,7 @@ public:
     ~Process();
     void run();
 protected:
+    double time;
     bool INITIALIZED;
     int const ROOT_ID = 0;
     int PROCESSOR_ID;
@@ -21,6 +22,7 @@ protected:
     int k;
     int m;
     Piece* piece;
+    double currentTime();
     virtual void initialize();
     virtual void syncExternalCells();
     virtual void syncMap();

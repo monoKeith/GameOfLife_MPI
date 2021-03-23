@@ -2,6 +2,7 @@
 using namespace std;
 
 #include "rootprocess.hpp"
+#include <iomanip>
 
 RootProcess::RootProcess(char* argv[]){
     // Initialize class vars
@@ -75,13 +76,15 @@ void RootProcess::distributeWork(){
     }
 
     // Calculate indeces to slice the map into pieces.
-    cout << "Splitting work..." << endl;
+    cout << "[" << fixed << setprecision(8) << currentTime() <<
+            "] Splitting map..." << endl;
 
     splitSquares(workDistribution);
 
-    cout << "Distributing work..." << endl;
-
     // Distribute task to all processors, one by one.
+    cout << "[" << fixed << setprecision(8) << currentTime() << 
+            "] Distributing work..." << endl;
+
     int initVars[] = {N, k, m};
     MPI_Bcast(&initVars, 3, MPI_INT, ROOT_ID, MPI_COMM_WORLD);
     for (int processorID = 1; processorID < PROCESSOR_COUNT; ++processorID){
@@ -96,7 +99,7 @@ void RootProcess::distributeWork(){
         MPI_Send(curPiece, curLength, MPI_CHAR, processorID, 0, MPI_COMM_WORLD);
     }
     
-    cout << "Work distribution complete!" << endl;
+    // Complete
     WORK_DISTRIBUTED = true;
 }
 
@@ -159,10 +162,16 @@ void RootProcess::syncMap(){
 void RootProcess::run(){
     distributeWork();
     initialize();
+    // Wait for everyone
+    MPI_Barrier(MPI_COMM_WORLD);
+    // Print work range
+    piece->printWorkRange();
+    // Run
     int mRemain = m;
     for (int i = 1; i <= k; ++i){
         iterate();
-        cout << "Iteration " << i << " finished." << endl;
+        cout << "[" << fixed << setprecision(8) << currentTime() << 
+                "] Finished Iteration # " << i << endl;
         // For each m-th evolutionary step, print.
         if (--mRemain == 0){
            inputFile->printFile();
