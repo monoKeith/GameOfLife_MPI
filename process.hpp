@@ -11,8 +11,7 @@ class Process
 public:
     Process();
     ~Process();
-    void initialize();
-    void iterate();
+    void run();
 protected:
     bool INITIALIZED;
     int const ROOT_ID = 0;
@@ -22,6 +21,8 @@ protected:
     int k;
     int m;
     Piece* piece;
+    void initialize();
+    void iterate();
 };
 
 #endif

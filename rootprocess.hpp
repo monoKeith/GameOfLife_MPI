@@ -9,13 +9,14 @@ class RootProcess: public Process {
 public:
     RootProcess(char* argv[]);
     ~RootProcess();
-    void distributeWork();
-    void initialize();
-    void iterate();
+    void run();
 private:
     FileHandle* inputFile;
     bool WORK_DISTRIBUTED;
     int** workDistribution;
+    void distributeWork();
+    void initialize();
+    void iterate();
     void splitSquares(int** workDistribution);
     void syncExternalCells();
     void syncMap();

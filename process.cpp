@@ -44,6 +44,9 @@ void Process::initialize(){
 
 // Calculate and generate next iteration.
 void Process::iterate(){
+    // Wait for everyone
+    MPI_Barrier(MPI_COMM_WORLD);
+
     // Sync External Cells
     int curLength = piece->externalLength();
     char curExternalCell[curLength];
@@ -61,4 +64,11 @@ void Process::iterate(){
     char curPiece[curLength];
     piece->getPiece(curPiece);
     MPI_Send(curPiece, curLength, MPI_CHAR, ROOT_ID, 0, MPI_COMM_WORLD);
+}
+
+void Process::run(){
+    initialize();
+    for (int i = 0; i < k; ++i){
+        iterate();
+    }
 }

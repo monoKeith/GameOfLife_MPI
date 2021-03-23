@@ -165,6 +165,9 @@ void RootProcess::syncMap(){
 
 
 void RootProcess::iterate(){
+    // Wait for everyone
+    MPI_Barrier(MPI_COMM_WORLD);
+
     // Synchronize external cells to each processor
     syncExternalCells();
     
@@ -176,4 +179,16 @@ void RootProcess::iterate(){
 
     // Synchronize map
     syncMap();
+
+    inputFile->printFile();
+}
+
+
+void RootProcess::run(){
+    distributeWork();
+    initialize();
+    for (int i = 1; i <= k; ++i){
+        cout << "Iteration " << i << endl;
+        iterate();
+    }
 }

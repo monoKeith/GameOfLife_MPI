@@ -20,17 +20,14 @@ int PROCESSOR_COUNT;
 void run_host(char* argv[])
 {
     RootProcess process(argv);
-    process.distributeWork();
-    process.initialize();
-    process.iterate();
+    process.run();
 }
 
 
 void run_dist()
 {
     Process process;
-    process.initialize();
-    process.iterate();
+    process.run();
 }
 
 
