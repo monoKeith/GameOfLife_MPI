@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
         // Check if process count supported.
         float numPart = sqrt(PROCESSOR_COUNT);
         if (ceil(numPart) > numPart) {
-            cout << "Processor count unsupported! Should be a square! (e.g. 2, 4, 8, 16, 32)" << endl;
+            cout << "Processor count unsupported! Should be a square! (e.g. 1, 4, 9, 16, 25)" << endl;
             MPI_Abort(MPI::COMM_WORLD, 1);
         }
 

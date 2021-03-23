@@ -26,6 +26,7 @@ protected:
     virtual void initialize();
     virtual void syncExternalCells();
     virtual void syncMap();
+    virtual void syncRunTime();
     void iterate();
 };
 

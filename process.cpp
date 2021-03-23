@@ -68,6 +68,14 @@ void Process::syncMap(){
 }
 
 
+// Sync runtime
+// Send runtime to root
+void Process::syncRunTime(){
+    double runTime = currentTime();
+    MPI_Gather(&runTime, 1, MPI_DOUBLE, NULL, 0, MPI_DOUBLE, ROOT_ID, MPI_COMM_WORLD);
+}
+
+
 // Calculate and generate next iteration.
 void Process::iterate(){
     // Wait for everyone
@@ -93,4 +101,6 @@ void Process::run(){
     for (int i = 1; i <= k; ++i){
         iterate();
     }
+    // Synchronize runtime
+    syncRunTime();
 }

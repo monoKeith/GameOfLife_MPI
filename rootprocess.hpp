@@ -19,6 +19,7 @@ private:
     void initialize() override;
     void syncExternalCells() override;
     void syncMap() override;
+    void syncRunTime() override;
 };
 
 #endif

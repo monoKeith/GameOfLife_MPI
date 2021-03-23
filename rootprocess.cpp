@@ -3,6 +3,7 @@ using namespace std;
 
 #include "rootprocess.hpp"
 #include <iomanip>
+#include <algorithm>
 
 RootProcess::RootProcess(char* argv[]){
     // Initialize class vars
@@ -159,6 +160,19 @@ void RootProcess::syncMap(){
 }
 
 
+// Sync runtime
+// Gather runtime from all processors
+void RootProcess::syncRunTime(){
+    double runTime = currentTime();
+    double runTimes[PROCESSOR_COUNT];
+    MPI_Gather(&runTime, 1, MPI_DOUBLE, runTimes, 1, MPI_DOUBLE, ROOT_ID, MPI_COMM_WORLD);
+    // Sort
+    sort(runTimes, runTimes + PROCESSOR_COUNT);
+    cout << endl << " Total Runtime: Fastest = " << runTimes[0] << 
+                    " Slowest = " << runTimes[PROCESSOR_COUNT - 1] << endl;
+}
+
+
 void RootProcess::run(){
     distributeWork();
     initialize();
@@ -178,4 +192,6 @@ void RootProcess::run(){
            mRemain = m; 
         }
     }
+    // Synchronize runtime
+    syncRunTime();
 }
