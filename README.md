@@ -1,5 +1,5 @@
 # GameOfLife_MPI
-Distributed computing (MPI) implementation of GameOfLife.
+Distributed computing (MPI) implementation of [GameOfLife](https://en.wikipedia.org/wiki/Conway's_Game_of_Life).
 
 
 ## How to compile:
@@ -13,7 +13,7 @@ Distributed computing (MPI) implementation of GameOfLife.
 
 ## Output file:
 
-The name of the output file depends on the the number m, which determines how often an output is generated.
+The name of the output file depends on the the number *m*, which determines how often an output is generated.
 
 The name of output file is:
 
@@ -28,7 +28,7 @@ The name of output file is:
 mpiexec -np 9 --hostfile hostfile main "$1" "$2" "$3" "$4"
 ```
 
-change the argument followed by -np to any squared number (e.g. 1, 4, 9, 16, 25).
+change the argument followed by *-np* to any squared number (e.g. 1, 4, 9, 16, 25).
 
 
 2. Or, just run the program with mpiexec without using the run script:
@@ -41,6 +41,12 @@ mpiexec -np <num_processor> --hostfile hostfile main <N> <k> <m> <input_file>
 
 Edit the hostfile, add hostname or ip address.
 
+```
+localhost
+node-1
+node-2
+node-3
+```
 
 ## Some runtime measurements
 
@@ -72,3 +78,8 @@ Measured with 4 virtual machines, each with a dual-core processor and 2GB of RAM
     * 16 Processor: 0.20624947s
 
 Since the calculation size is too small, overhead of communication is very high.
+
+
+## Pending improvements
+
+Update the communication between processors to use MPI_AlltoAll instead of using MPI_Send MPI_Recv.
