@@ -27,8 +27,6 @@ public:
     int externalLength();
     // Static method to calculate length of external var.
     static int externalLength(int workRange[]);
-    // Get size of boundary values
-    int boundaryLength();
 private:
     int PROCESSOR_ID;
     int workRange_X[2];

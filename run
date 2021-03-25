@@ -5,4 +5,4 @@ if [ "$#" -ne 4 ]; then
     exit 1
 fi
 
-mpiexec -np 16 --hostfile hostfile main "$1" "$2" "$3" "$4"
+mpiexec -np 9 --hostfile hostfile main "$1" "$2" "$3" "$4"

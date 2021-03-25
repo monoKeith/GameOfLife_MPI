@@ -193,11 +193,6 @@ int Piece::externalLength(int workRange[]){
     return 2 * (length_X + length_Y) + 4;
 }
 
-// Calculate the length of boundary values
-int Piece::boundaryLength(){
-    return 2 * (length_X + length_Y) - 4;
-}
-
 
 // Access value of an external cell
 // y & x corresponds to internal indices
