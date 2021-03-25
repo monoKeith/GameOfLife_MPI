@@ -50,12 +50,20 @@ Measured with 4 virtual machines, each with a dual-core processor and 2GB of RAM
     * 4  Processor: 0.05873571s
     * 16 Processor: 0.21973049s
 
+
+    ./run 100 10 10 ./test_files/test\ 2\ input\ \(N\=100\).txt
+
 * Test 2
     * 1  Processor: 0.01860844s
     * 4  Processor: 0.10314720s
     * 16 Processor: 0.17839387s
 
+
+    ./run 100 10 10 ./test_files/test\ 3\ input\ \(N\=100\).txt
+
 * Test 3
     * 1  Processor: 0.01890066s
     * 4  Processor: 0.05995084s
     * 16 Processor: 0.20624947s
+
+Since the calculation size is too small, overhead of communication is very high.
